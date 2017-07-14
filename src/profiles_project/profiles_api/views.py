@@ -6,10 +6,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.views import obtain_auth_token
 
 from . import serializers
 from . import models
 from . import permissions
+
 
 # Create your views here.
 class HelloApiView(APIView):
@@ -29,7 +33,6 @@ class HelloApiView(APIView):
 
         return Response({'message': 'Hello!', 'an_apiview': an_apiview})
 
-
     def post(self, request):
         """Create a hello message with our name."""
 
@@ -43,18 +46,15 @@ class HelloApiView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     def put(self, request, pk=None):
         """Handles updating an object."""
 
         return Response({'method': 'put'})
 
-
     def patch(self, request, pk=None):
         """Patch request, only updates fields provided in the request"""
 
         return Response({'method': 'patch'})
-    
 
     def delete(self, request, pk=None):
         """Delete an object."""
@@ -77,7 +77,6 @@ class HelloViewSet(viewsets.ViewSet):
         ]
 
         return Response({'message': 'Hello!', 'a_viewset': a_viewset})
-
 
     def create(self, request):
         """Create a new hello message."""
@@ -128,6 +127,19 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', 'email', )
 
+
+class LoginViewSet(viewsets.ViewSet):
+    """Checks email and password and returns an auth token."""
+
+    serializer_class = AuthTokenSerializer
+
+    def create(self, request):
+        """Use the ObtainAuthToken APIView to validate and create a token."""
+
+        return ObtainAuthToken().post(request)
+        # return Response({'name':'name'})
+
+        # return obtain_auth_token(request)
 
 
 
