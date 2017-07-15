@@ -26,7 +26,8 @@ SECRET_KEY = '%z8(k#!=mp8o0f0#q-jw^6m_tdceqh01x11%p6l=1abx^8d5s+'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '*.*.*.*',
+    'http://www.i-timm.com/',
+    '39.108.7.135',
 ]
 
 
